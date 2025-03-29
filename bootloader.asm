@@ -4,6 +4,7 @@ ORG 0x7C00 ; Sets the origin of the program to 0x7C00, this is needed for the BI
 
 
 start:
+
     ; Real mode segment setup
     cli                     ; disable interrupts
     xor ax, ax
@@ -31,7 +32,7 @@ halt:
     jmp $
 
 
-msg db 'Hello, World!', 0
+msg db 'Hai ary!!! :3', 0
 
 ; Fille the rest of the 512 bytes with 0
 times 510-($-$$) db 0

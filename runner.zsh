@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-set -e  # Exit immediately if any command fails
+set -e # Exit immediately if any command fails
 
 # =========================
 # CONFIGURATION
@@ -21,12 +21,15 @@ RUN_QEMU=false
 
 for arg in "$@"; do
   case "$arg" in
-    --no-cleanup)
-      CLEANUP=false
-      ;;
-    --run)
-      RUN_QEMU=true
-      ;;
+  --no-cleanup)
+    CLEANUP=false
+    ;;
+  --run)
+    RUN_QEMU=true
+    ;;
+  --asm=*)
+    HYPERLOADER_ASM="${arg#--asm=}"
+    ;;
   esac
 done
 
@@ -50,8 +53,8 @@ trap cleanup EXIT
 
 echo "[+] Assembling hyperloader..."
 nasm -f bin -o "$HYPERLOADER_BIN" "$HYPERLOADER_ASM" || {
-    echo "[-] Failed to assemble hyperloader"
-    exit 1
+  echo "[-] Failed to assemble hyperloader"
+  exit 1
 }
 
 # =========================
@@ -76,9 +79,9 @@ cp "$FLOPPY_IMG" "$ISO_DIR/hyperloader.img"
 
 echo "[+] Creating ISO image..."
 genisoimage -quiet -V 'HYPERLOADER' -input-charset iso8859-1 \
-    -o "$ISO_FILE" -b hyperloader.img -hide hyperloader.img "$ISO_DIR" || {
-    echo "[-] ISO creation failed"
-    exit 1
+  -o "$ISO_FILE" -b hyperloader.img -hide hyperloader.img "$ISO_DIR" || {
+  echo "[-] ISO creation failed"
+  exit 1
 }
 
 # =========================
