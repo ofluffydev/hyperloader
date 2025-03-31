@@ -1,4 +1,6 @@
 iso_root
+iso_build_temp
+.vscode
 *.bin
 *.iso
 *.img
